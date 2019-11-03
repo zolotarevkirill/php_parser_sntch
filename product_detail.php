@@ -1,4 +1,17 @@
+<style type="text/css">
+	table{
+		border: 1px solid;
+		border-collapse: collapse;
+	}
+	table tr{
+		border: 1px solid;
+	}
+	table td{
+		border: 1px solid;
+	}
+</style>
 <?php
+
 
 include('phpquery.php');
 
@@ -23,18 +36,44 @@ $variant_availability = $document->find('.variant-list__price-availability');
 
 
 
+$inner_title = [];
+$inner_title_count_arr = 0;
+$inner_title_property = $document->find('.item-specs-col');
+
+$step = 0;
+$count = 0;
+foreach ($inner_title_property as $el) {
+
+	$count++;
+	if(in_array($el->textContent, $inner_title[$step]))
+    {
+    	$step++;
+    }
+
+    if ($count % 2)
+    {
+    	$inner_title[$step][$count] = $el->textContent; 
+    }
+    else
+    {
+    	$inner_title[$step][$count] = $el->textContent;
+    }
+
+    
+}
+
 // title
 echo $title;
 
 // images
+
 foreach ($img as $el) {
 	echo "<p><img src='https://www.santech.ru".$el->getAttribute('href')."' width='' heigth=''></p>";
 }
 
-
-echo "<h2>Варианты</h2>";
 $price = [];
 $availability = [];
+$value= [];
 
 foreach ($variant_price as $el) {
 		$price[] =$el->textContent;
@@ -44,6 +83,31 @@ foreach ($variant_availability as $el) {
 		$availability[] =$el->textContent;
 }
 
+foreach ($property_value as $el) {
+		$value[] =$el->textContent;
+}
+
+echo "<h2>Общее описание</h2>";
+if(count($price) == 1)
+{
+	echo "<h2>Товар 1 его цена = ".$price[0]."</h2>";
+}
+echo "<table>";
+foreach ($property_name as $k => $el) {
+	echo "<tr>";
+		echo "<td>";
+		echo  $el->textContent;
+		echo "</td>";
+		echo "<td>";
+		echo  $value[$k];
+		echo "</td>";
+	echo "</tr>";
+}
+echo "</table>";
+
+
+
+echo "<h2>Товары</h2>";
 echo "<table>";
 foreach ($variant_title as $k => $el) {
 	echo "<tr>";
@@ -56,25 +120,38 @@ foreach ($variant_title as $k => $el) {
 		echo "<td>";
 		echo  $availability[$k];
 		echo "</td>";
+		foreach ($inner_title[$k] as $k1 => $value) {
+			if($k1 % 2)
+			{
+				echo "<td>";
+				echo $value;
+				echo "</td>";
+			}
+		}
 	echo "</tr>";
+	echo "<tr>";
+	echo "<td>";
+		echo  '';
+		echo "</td>";
+		echo "<td>";
+		echo  '';
+		echo "</td>";
+		echo "<td>";
+		echo  '';
+		echo "</td>";
+		foreach ($inner_title[$k] as $key => $v) {
+			if($key % 2 == 0)
+			{
+				echo "<td>";
+				echo $v;
+				echo "</td>";
+			}
+		}
+	echo "</tr>";
+	
 }
 echo "</table>";
 
-echo "<h2>Характеристики</h2>";
-// table property
-$value = [];
-foreach ($property_value as $el) {
-		$value[] =$el;
-}
-echo "<table>";
-foreach ($property_name as $k => $el) {
-	echo "<tr>";
-		echo "<td>";
-		echo  $el->textContent;
-		echo "</td>";
-		echo "<td>";
-		echo  $value[$k]->textContent;
-		echo "</td>";
-	echo "</tr>";
-}
-echo "</table>";
+
+
+
