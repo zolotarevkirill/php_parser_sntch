@@ -1,7 +1,7 @@
 <?php
 include('phpquery.php');
 
-$catalog_url = 'https://www.santech.ru/catalog/'.$_GET['section'].'/';
+$catalog_url = 'https://*/catalog/'.$_GET['section'].'/';
 
 $contents = file_get_contents( $catalog_url,false, stream_context_create( array( 'ssl' => array( 'verify_peer' => false, 'verify_peer_name' => false ) ) ) );
 
