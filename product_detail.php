@@ -17,7 +17,7 @@ include('phpquery.php');
 
 $product = [];
 
-$product_url = 'https://*'.$_GET['url'];
+$product_url = 'https://www.santech.ru'.$_GET['url'];
 
 $contents = file_get_contents( $product_url,false, stream_context_create( array( 'ssl' => array( 'verify_peer' => false, 'verify_peer_name' => false ) ) ) );
 
